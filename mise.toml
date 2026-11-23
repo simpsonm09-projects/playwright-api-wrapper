@@ -19,6 +19,9 @@
 # runs the dev server. The container still runs Node.
 bun = "1.4.5"
 node = "26.13.1"
+
+# AI-slop gate, pinned so CI resolves no version at run time (C7.2).
+"npm:aislop" = "0.16.1"
 "npm:oxlint" = "1.93.0"
 
 # Linters
