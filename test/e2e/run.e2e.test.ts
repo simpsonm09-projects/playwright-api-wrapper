@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "bun:test";
 
 import { startFixture } from "../../fixture/server.js";
 import { loadFlows } from "../../src/config/flows.js";

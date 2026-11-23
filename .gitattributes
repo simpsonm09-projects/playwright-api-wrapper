@@ -6,4 +6,4 @@
 *.webp binary
 
 # Generated. Keep it out of diff review and language stats.
-package-lock.json linguist-generated=true
+bun.lock linguist-generated=true

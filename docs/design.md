@@ -309,7 +309,7 @@ added to the image or the lockfile.
 Ran locally on Node 24.19.0 on 2026-09-27:
 
 - `npm run typecheck` clean.
-- `npx vitest run` green: 32 unit and integration tests plus 4 e2e tests.
+- `bun test` green: 32 unit and integration tests plus 4 e2e tests.
 - The e2e test passed a full checkout flow through real Chromium, returned
   `outputs.orderId`, and confirmed the order through the fixture API.
 - SSE returned `step` events and a terminal `result` event with `"status":"passed"`.
@@ -318,7 +318,7 @@ Ran locally on Node 24.19.0 on 2026-09-28, for named flows, the basic-form
 walkthrough, and both Postman clients:
 
 - `npm run typecheck` clean.
-- `npx vitest run` green: 36 unit tests, 9 integration tests, and 6 e2e tests.
+- `bun test` green: 36 unit tests, 9 integration tests, and 6 e2e tests.
 - The e2e suite ran the named `checkout` flow and the `basic-form` flow through
   real Chromium, returned `outputs.orderId` and `outputs.submissionId`, and
   confirmed the saved order and submission through the fixture API.

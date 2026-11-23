@@ -8,3 +8,7 @@ Index for this repository.
 - [API](api.md) documents the endpoints, steps, locators, and responses.
 - [Security](security.md) covers the allowlist, the SSRF checks, and the limits.
 - [Development](development.md) covers the local run, Docker, the Postman clients, and CI.
+
+## Exceptions
+
+- [Exceptions](exceptions.md) records the rules this repository cannot meet yet.

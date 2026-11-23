@@ -25,9 +25,14 @@ To run the API locally or with Docker Compose, see [`docs/development.md`](docs/
 | Command | Does |
 | --- | --- |
 | `just install` | Installs the pinned tools. |
-| `just lint` | Runs the linters. |
-| `just test` | Runs the unit, integration, and e2e tests. |
-| `just verify` | Lints and tests. |
+| `just deps` | Installs the dependencies with `bun install --frozen-lockfile`. |
+| `just fmt` / `just fmt-check` | Formats with Bun, or checks the formatting. |
+| `just lint` | Lints TypeScript with oxlint. |
+| `just typecheck` | Type checks the sources, fixture, and tests with `bun check`. |
+| `just test` | Runs the unit and integration tests. |
+| `just test-e2e` | Runs the Chromium end-to-end tests. |
+| `just check` | Runs everything CI requires locally. |
+| `just verify` | Alias for `just check`. |
 
 ## Documentation
 

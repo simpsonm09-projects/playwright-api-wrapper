@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "bun:test";
 
 import type { FlowRegistry } from "../../src/config/flows.js";
 import { ConcurrencyGate } from "../../src/run/concurrency.js";

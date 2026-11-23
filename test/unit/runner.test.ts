@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "bun:test";
 
 import type { FlowRegistry } from "../../src/config/flows.js";
 import { ERROR_CODES, isRunFailure } from "../../src/run/errors.js";
