@@ -264,8 +264,7 @@ sends `flow: "checkout"`. The third sends `flow: "basic-form"`. All assert
 `status === 'passed'` and capture an id from `outputs`.
 `postman/environment.template.json` holds placeholders only.
 `scripts/newman.mjs` and `scripts/postman-cli.mjs` run the collection with values
-from environment variables, which keeps the commands working on Windows and
-Linux. The Postman CLI script fetches the CLI through `npx`, so no dependency is
+from environment variables, which keeps the commands working on Linux. The Postman CLI script fetches the CLI through `npx`, so no dependency is
 added to the image or the lockfile.
 
 ## GitHub Actions
