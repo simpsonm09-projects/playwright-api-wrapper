@@ -51,25 +51,25 @@ jobs:
         run: lefthook validate
 
   lint:
-    uses: simpsonm09-projects/repo-standard/.github/workflows/lint.yml@5521ddab95a198a46fca80464c6f72ae699702bf # repo-standard, pinned commit
+    uses: simpsonm09-projects/repo-standard/.github/workflows/lint.yml@301bf82b937f8d6a09da73e9a22030bce2acd2e1 # repo-standard, pinned commit
   aislop:
     permissions:
       contents: read
       security-events: write
-    uses: simpsonm09-projects/repo-standard/.github/workflows/aislop.yml@5521ddab95a198a46fca80464c6f72ae699702bf # repo-standard, pinned commit
+    uses: simpsonm09-projects/repo-standard/.github/workflows/aislop.yml@301bf82b937f8d6a09da73e9a22030bce2acd2e1 # repo-standard, pinned commit
   security:
     permissions:
       contents: read
       security-events: write
-    uses: simpsonm09-projects/repo-standard/.github/workflows/security.yml@5521ddab95a198a46fca80464c6f72ae699702bf # repo-standard, pinned commit
+    uses: simpsonm09-projects/repo-standard/.github/workflows/security.yml@301bf82b937f8d6a09da73e9a22030bce2acd2e1 # repo-standard, pinned commit
   standard:
     permissions:
       contents: read
-    uses: simpsonm09-projects/repo-standard/.github/workflows/standard.yml@5521ddab95a198a46fca80464c6f72ae699702bf # repo-standard, pinned commit
+    uses: simpsonm09-projects/repo-standard/.github/workflows/standard.yml@301bf82b937f8d6a09da73e9a22030bce2acd2e1 # repo-standard, pinned commit
   coverage:
     permissions:
       contents: read
-    uses: simpsonm09-projects/repo-standard/.github/workflows/coverage.yml@5521ddab95a198a46fca80464c6f72ae699702bf # repo-standard, pinned commit
+    uses: simpsonm09-projects/repo-standard/.github/workflows/coverage.yml@301bf82b937f8d6a09da73e9a22030bce2acd2e1 # repo-standard, pinned commit
 
   # Required. Unit and integration tests need no browser, so they run here. The
   # Chromium e2e run and the container build are slow and do not diff; they run in
