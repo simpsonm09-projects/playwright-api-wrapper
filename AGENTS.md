@@ -21,6 +21,7 @@ A Fastify service that runs one Playwright browser scenario per request.
 - The request carries either an inline `steps` array or a `flow` name. Flows load at startup from `FLOWS_FILE` and are validated against the step schema.
 - Variables use `${name}` and `${secret.NAME}`. Do not use `{{...}}`, because Postman and newman substitute that form.
 - Docs: `docs/api.md`, `docs/security.md`, `docs/design.md`, `docs/development.md`.
+- Hooks: `just hooks` installs the shared Lefthook jobs from `simpsonm09-projects/.github` at the `hooks-v2` tag; `lefthook-local.yml` is git-ignored. Never skip a hook: no `LEFTHOOK=0`, no `--no-verify`, and never create `lefthook-local.yml` (C7.11). The ruleset is the real gate.
 
 ## Skills
 
