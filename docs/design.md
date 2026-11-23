@@ -59,7 +59,7 @@ Design consequences of these clients:
   serialization.
 - `playwright` 1.63.0, Chromium only, matching the Docker image tag, which is
   pinned by digest.
-- TypeScript 5.9 strict, Vitest 5 for tests, newman 6 for client tests.
+- TypeScript 7 strict, Bun's test runner for tests, newman 6 fetched on demand for client tests.
 
 The API code stays small. The browser layer is the weight. The official
 Playwright image is roughly 0.9 to 1.8 GB uncompressed, so "light" applies to
@@ -324,7 +324,7 @@ walkthrough, and both Postman clients:
   confirmed the saved order and submission through the fixture API.
 - A direct `POST /v1/runs` with `flow: "basic-form"` returned `status: "passed"`,
   all eleven steps passed, and `outputs` carried `nameValue` and `submissionId`.
-- With the fixture and API running locally, `npm run newman` and `npm run postman`
+- With the fixture and API running locally, `just newman` and `just postman`
   each ran all three collection requests. The inline request, the named checkout
   request, and the basic-form request all passed. The Postman CLI ran from the
   collection file with no login and no API key.
@@ -339,8 +339,8 @@ before relying on them.
 - Adopt the `repo-standard` rulesets. GitHub does not apply rulesets to a private
   repository on the free plan, so `protect-main` is written and waiting for the
   public flip. The apply script reports it and stops while private.
-- Resolve the moderate and high advisories reported by `npm audit`, most of which
-  come from newman's dependency tree (a dev dependency).
+- Resolve the two remaining moderate advisories in the runtime tree (`fast-uri`
+  and `ip-address`).
 - Decide the artifact policy if screenshots or traces are ever wanted.
 - Optionally slim the image by deleting non-Chromium browsers, measured against
   build time.

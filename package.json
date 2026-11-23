@@ -25,16 +25,15 @@
     "verify": "bun run typecheck && bun run test"
   },
   "dependencies": {
-    "@fastify/rate-limit": "^11.2.0",
+    "@fastify/rate-limit": "^11.3.0",
     "@fastify/type-provider-typebox": "^6.1.0",
     "@sinclair/typebox": "^0.34.52",
-    "fastify": "^5.12.5",
+    "fastify": "^5.12.8",
     "playwright": "1.63.0"
   },
   "devDependencies": {
     "@types/bun": "^1.4.5",
     "@types/node": "^26.6.4",
-    "newman": "^6.2.2",
     "typescript": "^7.0.2"
   }
 }

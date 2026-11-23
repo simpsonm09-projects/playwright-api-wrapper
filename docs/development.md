@@ -40,7 +40,7 @@ API_KEY=dev-local-key \
 just postman
 ```
 
-newman is a local dev dependency. The Postman CLI is fetched on demand by `npx`.
+Both clients are fetched on demand by `npx`, so neither adds its dependency tree to the lockfile.
 
 ## Tests
 
