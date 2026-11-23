@@ -32,7 +32,7 @@ lint *files:
 
 # Run the AI-slop gate.
 aislop:
-    mise exec -- aislop ci
+    npx --yes aislop@0.16.1 ci
 
 # Run the unit and integration tests. These need no browser.
 test:
