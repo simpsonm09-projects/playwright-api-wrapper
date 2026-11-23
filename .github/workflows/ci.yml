@@ -13,55 +13,58 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
-    if: github.repository_owner == 'simpsonm09-org' || github.repository_owner == 'simpsonm09-projects'
-    uses: simpsonm09-projects/repo-standard/.github/workflows/lint.yml@34941736aa4de7d634376043ae80527c3bfc76ea # repo-standard main
-  aislop:
-    if: github.repository_owner == 'simpsonm09-org' || github.repository_owner == 'simpsonm09-projects'
-    permissions:
-      contents: read
-      security-events: write
-    uses: simpsonm09-projects/repo-standard/.github/workflows/aislop.yml@34941736aa4de7d634376043ae80527c3bfc76ea # repo-standard main
-  security:
-    if: github.repository_owner == 'simpsonm09-org' || github.repository_owner == 'simpsonm09-projects'
-    permissions:
-      contents: read
-      security-events: write
-    uses: simpsonm09-projects/repo-standard/.github/workflows/security.yml@34941736aa4de7d634376043ae80527c3bfc76ea # repo-standard main
-  standard:
-    if: github.repository_owner == 'simpsonm09-org' || github.repository_owner == 'simpsonm09-projects'
-    permissions:
-      contents: read
-    uses: simpsonm09-projects/repo-standard/.github/workflows/standard.yml@34941736aa4de7d634376043ae80527c3bfc76ea # repo-standard main
-  coverage:
-    if: github.repository_owner == 'simpsonm09-org' || github.repository_owner == 'simpsonm09-projects'
-    permissions:
-      contents: read
-    uses: simpsonm09-projects/repo-standard/.github/workflows/coverage.yml@34941736aa4de7d634376043ae80527c3bfc76ea # repo-standard main
-
-  test:
-    if: github.repository_owner == 'simpsonm09-org' || github.repository_owner == 'simpsonm09-projects'
+  fmt:
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 0
           persist-credentials: false
-      - name: Set up Node
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - name: Install pinned tools
+        uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
+      - name: Check formatting
+        run: just fmt-check
+
+  lint:
+    uses: simpsonm09-projects/repo-standard/.github/workflows/lint.yml@86bf84b45d36ea61610fd591e1b81497cf868cd5 # repo-standard, pinned commit
+  aislop:
+    permissions:
+      contents: read
+      security-events: write
+    uses: simpsonm09-projects/repo-standard/.github/workflows/aislop.yml@86bf84b45d36ea61610fd591e1b81497cf868cd5 # repo-standard, pinned commit
+  security:
+    permissions:
+      contents: read
+      security-events: write
+    uses: simpsonm09-projects/repo-standard/.github/workflows/security.yml@86bf84b45d36ea61610fd591e1b81497cf868cd5 # repo-standard, pinned commit
+  standard:
+    permissions:
+      contents: read
+    uses: simpsonm09-projects/repo-standard/.github/workflows/standard.yml@86bf84b45d36ea61610fd591e1b81497cf868cd5 # repo-standard, pinned commit
+  coverage:
+    permissions:
+      contents: read
+    uses: simpsonm09-projects/repo-standard/.github/workflows/coverage.yml@86bf84b45d36ea61610fd591e1b81497cf868cd5 # repo-standard, pinned commit
+
+  # Required. Unit and integration tests need no browser, so they run here. The
+  # Chromium e2e run and the container build are slow and do not diff; they run in
+  # the `e2e` workflow on main, weekly and on demand. See the owner standard C5.4.
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          node-version: 24
-          cache: npm
+          persist-credentials: false
+      - name: Install pinned tools
+        uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
       - name: Install dependencies
-        run: npm ci
-      - name: Typecheck
-        run: npm run typecheck
-      - name: Install Playwright Chromium
-        run: npx playwright install --with-deps chromium
-      - name: Tests
-        run: npx vitest run
-      - name: Build
-        run: npm run build
-      - name: Build the container image
-        run: docker build -t playwright-api-wrapper:ci .
+        run: just deps
+      - name: Lint
+        run: just lint
+      - name: Type check
+        run: just typecheck
+      - name: Unit and integration tests
+        run: just test

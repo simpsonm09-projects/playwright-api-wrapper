@@ -3,11 +3,12 @@
 ## Local, without Docker
 
 ```sh
-npm install
-npx playwright install chromium
+just install
+just deps
+bunx playwright install chromium
 cp .env.example .env
-npm run dev            # API on http://127.0.0.1:3000
-npm run fixture        # fixture site on http://127.0.0.1:4010
+just dev            # API on http://127.0.0.1:3000
+just fixture        # fixture site on http://127.0.0.1:4010
 ```
 
 ## Docker Compose
@@ -16,7 +17,7 @@ Compose runs the API and the fixture under the `test` profile. Both are publishe
 
 ```sh
 cp .env.example .env
-npm run compose:test        # api on :3000, fixture on :4010
+just compose-test        # api on :3000, fixture on :4010
 ```
 
 The Compose API runs with `NODE_ENV=development` so the development API key works. The image itself defaults to production, which refuses that key.
@@ -29,34 +30,32 @@ Both clients run `postman/collection.json`.
 WRAPPER_URL=http://localhost:3000 \
 TARGET_URL=http://127.0.0.1:4010/checkout \
 API_KEY=dev-local-key \
-npm run newman
+just newman
 ```
 
 ```sh
 WRAPPER_URL=http://localhost:3000 \
 TARGET_URL=http://127.0.0.1:4010/checkout \
 API_KEY=dev-local-key \
-npm run postman
+just postman
 ```
 
-newman is a local dev dependency. The Postman CLI is fetched on demand by `npx`.
+Both clients are fetched on demand by `npx`, so neither adds its dependency tree to the lockfile.
 
 ## Tests
 
 ```sh
-npm run typecheck      # tsc --noEmit
-npm test               # unit, integration, and e2e
-npm run test:unit
-npm run test:integration
-npm run test:e2e       # needs npx playwright install chromium
-npm run build          # emits dist/
+just typecheck      # bun check
+just test           # unit and integration, no browser
+just test-e2e       # needs bunx playwright install chromium
+just build          # emits dist/
 ```
 
 The e2e test starts the fixture, drives a real Chromium run through the API, and verifies the server-side effect through the fixture's own API.
 
 ## Continuous integration
 
-`ci.yml` runs typecheck, unit, integration, e2e, and build. `postman.yml` runs on every pull request, builds the image, starts it with the fixture, and runs the collection through both newman and the Postman CLI. `publish.yml` builds a multi-arch image, pushes it to GHCR, then runs both clients against the published image.
+`ci.yml` runs format, lint, typecheck, coverage, and the unit and integration tests in parallel. The `e2e` workflow runs the Chromium end-to-end test and the container build on `main`, weekly, and on demand. `postman.yml` runs on every pull request, builds the image, starts it with the fixture, and runs the collection through both newman and the Postman CLI. `publish.yml` builds a multi-arch image, pushes it to GHCR, then runs both clients against the published image.
 
 ## Verify the basic form
 

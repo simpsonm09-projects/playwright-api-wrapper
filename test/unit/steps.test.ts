@@ -1,5 +1,5 @@
 import type { Page } from "playwright";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, mock } from "bun:test";
 
 import type { TargetGuard } from "../../src/config/allowlist.js";
 import {
@@ -11,24 +11,24 @@ import { executeStep } from "../../src/run/steps.js";
 import type { Step } from "../../src/schema/request.js";
 
 interface FakeLocator {
-  fill: ReturnType<typeof vi.fn>;
-  click: ReturnType<typeof vi.fn>;
-  press: ReturnType<typeof vi.fn>;
-  selectOption: ReturnType<typeof vi.fn>;
-  check: ReturnType<typeof vi.fn>;
-  waitFor: ReturnType<typeof vi.fn>;
-  innerText: ReturnType<typeof vi.fn>;
-  inputValue: ReturnType<typeof vi.fn>;
+  fill: ReturnType<typeof mock>;
+  click: ReturnType<typeof mock>;
+  press: ReturnType<typeof mock>;
+  selectOption: ReturnType<typeof mock>;
+  check: ReturnType<typeof mock>;
+  waitFor: ReturnType<typeof mock>;
+  innerText: ReturnType<typeof mock>;
+  inputValue: ReturnType<typeof mock>;
 }
 
 interface FakePage {
-  goto: ReturnType<typeof vi.fn>;
-  url: ReturnType<typeof vi.fn>;
-  getByRole: ReturnType<typeof vi.fn>;
-  getByLabel: ReturnType<typeof vi.fn>;
-  getByTestId: ReturnType<typeof vi.fn>;
-  getByText: ReturnType<typeof vi.fn>;
-  locator: ReturnType<typeof vi.fn>;
+  goto: ReturnType<typeof mock>;
+  url: ReturnType<typeof mock>;
+  getByRole: ReturnType<typeof mock>;
+  getByLabel: ReturnType<typeof mock>;
+  getByTestId: ReturnType<typeof mock>;
+  getByText: ReturnType<typeof mock>;
+  locator: ReturnType<typeof mock>;
 }
 
 const DEFAULT_URL = "http://localhost:3000/checkout";
@@ -36,34 +36,34 @@ const TARGET = { by: "testId", value: "order-id" } as const;
 
 function fakeLocator(overrides: Partial<FakeLocator> = {}): FakeLocator {
   return {
-    fill: vi.fn().mockResolvedValue(undefined),
-    click: vi.fn().mockResolvedValue(undefined),
-    press: vi.fn().mockResolvedValue(undefined),
-    selectOption: vi.fn().mockResolvedValue(undefined),
-    check: vi.fn().mockResolvedValue(undefined),
-    waitFor: vi.fn().mockResolvedValue(undefined),
-    innerText: vi.fn().mockResolvedValue("Order received"),
-    inputValue: vi.fn().mockResolvedValue("read value"),
+    fill: mock().mockResolvedValue(undefined),
+    click: mock().mockResolvedValue(undefined),
+    press: mock().mockResolvedValue(undefined),
+    selectOption: mock().mockResolvedValue(undefined),
+    check: mock().mockResolvedValue(undefined),
+    waitFor: mock().mockResolvedValue(undefined),
+    innerText: mock().mockResolvedValue("Order received"),
+    inputValue: mock().mockResolvedValue("read value"),
     ...overrides,
   };
 }
 
 function fakePage(locator: FakeLocator, url: string = DEFAULT_URL): FakePage {
   return {
-    goto: vi.fn().mockResolvedValue(undefined),
-    url: vi.fn(() => url),
-    getByRole: vi.fn(() => locator),
-    getByLabel: vi.fn(() => locator),
-    getByTestId: vi.fn(() => locator),
-    getByText: vi.fn(() => locator),
-    locator: vi.fn(() => locator),
+    goto: mock().mockResolvedValue(undefined),
+    url: mock(() => url),
+    getByRole: mock(() => locator),
+    getByLabel: mock(() => locator),
+    getByTestId: mock(() => locator),
+    getByText: mock(() => locator),
+    locator: mock(() => locator),
   };
 }
 
 function fakeGuard(): TargetGuard {
   return {
-    assertAllowed: vi.fn().mockResolvedValue(new URL(DEFAULT_URL)),
-    isRequestAllowed: vi.fn(() => true),
+    assertAllowed: mock().mockResolvedValue(new URL(DEFAULT_URL)),
+    isRequestAllowed: mock(() => true),
   } as unknown as TargetGuard;
 }
 
@@ -176,11 +176,9 @@ describe("executeStep waitFor", () => {
 
   it("reports a wait timeout", async () => {
     const locator = fakeLocator({
-      waitFor: vi
-        .fn()
-        .mockRejectedValue(
-          Object.assign(new Error("timeout"), { name: "TimeoutError" }),
-        ),
+      waitFor: mock().mockRejectedValue(
+        Object.assign(new Error("timeout"), { name: "TimeoutError" }),
+      ),
     });
     const failure = await stepFailure(
       { action: "waitFor", target: TARGET, state: "detached" },
@@ -192,7 +190,7 @@ describe("executeStep waitFor", () => {
 
   it("propagates a non-timeout wait error", async () => {
     const locator = fakeLocator({
-      waitFor: vi.fn().mockRejectedValue(new Error("page crashed")),
+      waitFor: mock().mockRejectedValue(new Error("page crashed")),
     });
     try {
       await runStep({ action: "waitFor", target: TARGET }, { locator });
@@ -215,7 +213,7 @@ describe("executeStep assertVisible", () => {
 
   it("fails when the element is not visible", async () => {
     const locator = fakeLocator({
-      waitFor: vi.fn().mockRejectedValue(new Error("not visible")),
+      waitFor: mock().mockRejectedValue(new Error("not visible")),
     });
     const failure = await stepFailure(
       { action: "assertVisible", target: TARGET },
@@ -275,7 +273,7 @@ describe("executeStep assertText", () => {
 
   it("fails when the element is missing", async () => {
     const locator = fakeLocator({
-      innerText: vi.fn().mockRejectedValue(new Error("no element")),
+      innerText: mock().mockRejectedValue(new Error("no element")),
     });
     const failure = await stepFailure(
       { action: "assertText", target: TARGET, contains: "received" },
