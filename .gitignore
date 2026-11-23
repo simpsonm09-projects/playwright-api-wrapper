@@ -20,3 +20,6 @@ coverage/
 
 # Verification evidence (project-local verify skill)
 artifacts/
+
+# Local Lefthook overrides (never committed)
+lefthook-local.yml
